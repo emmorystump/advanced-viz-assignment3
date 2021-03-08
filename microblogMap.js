@@ -18,6 +18,7 @@ MicroblogMap.prototype.initVis = function() {
 
     $.getJSON('cse557_option1_microblogs.json', (jsonData) => {
         vis.data = jsonData;
+        console.log(jsonData);
         let locations = jsonData.location;
         console.log(locations[0]);
         vis.updateVis();
@@ -41,6 +42,7 @@ MicroblogMap.prototype.updateVis = function() {
         let latitude = loc[0];
         let longitude = loc[1];
         let post_text = microblog_text[i];
+        console.log(latitude)
 
         var post = L.marker([latitude, longitude]).bindPopup(post_text)
         microblogs.addLayer(post);
