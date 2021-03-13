@@ -43,7 +43,18 @@ MicroblogMap.prototype.updateVis = function() {
         let latitude = loc[0];
         let longitude = loc[1];
         let post_text = microblog_text[post_id];
+        
+        // Split date information for when we have a timeline input
         let date = dates[post_id];
+        date = date.split(" ");
+        month_day_year = date[0].split("/");
+        month = month_day_year[0];
+        day = month_day_year[1];
+        yar = month_day_year[2];
+        hour_minute = date[1].split(":");
+        hour = hour_minute[0];
+        minute = hour_minute[1]
+
 
         var post = L.marker([latitude, longitude]).bindPopup(post_text)
         microblogs.addLayer(post);
