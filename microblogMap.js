@@ -26,6 +26,7 @@ MicroblogMap.prototype.initVis = function() {
 
 }
 
+
 MicroblogMap.prototype.updateVis = function() {
     var vis = this;
 

@@ -45,8 +45,10 @@ for i in range(num_records):
 print(len(sick_posts))
 
         
+temp.to_json('cse557_option1_microblogs.json')
 
-# temp.to_json('cse557_option1_microblogs1.json')
+json_string = json.dumps(sick_posts)
+json_string.to_json('cse557_option1_sick_microblogs.json')
 
 
 # need to try and filter this so that it only has tweets from sick people
