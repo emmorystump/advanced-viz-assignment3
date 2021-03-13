@@ -43,6 +43,7 @@ MicroblogMap.prototype.updateVis = function() {
         let latitude = loc[0];
         let longitude = loc[1];
         let post_text = microblog_text[post_id];
+        let date = dates[post_id];
 
         var post = L.marker([latitude, longitude]).bindPopup(post_text)
         microblogs.addLayer(post);
