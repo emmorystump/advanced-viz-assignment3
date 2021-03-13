@@ -29,19 +29,20 @@ MicroblogMap.prototype.updateVis = function() {
     var vis = this;
 
     microblogs = L.layerGroup().addTo(vis.map);
-    let locations = vis.data.location;
-    num_data = Object.keys(locations).length;
+    samples = JSON.parse(vis.sampled_ids)
+    num_data = samples.length;
 
+    let locations = vis.data.location;
     let dates = vis.data.post_date_time;
     let microblog_text = vis.data.text;
     let user = vis.data.user_id;
 
-    for (var i = 0; i < 100; i++) {
-        loc = locations[i].split(" ");
+    for (var i = 0; i < num_data; i++) {
+        post_id = samples[i];
+        loc = locations[post_id].split(" ");
         let latitude = loc[0];
         let longitude = loc[1];
-        let post_text = microblog_text[i];
-        console.log(latitude)
+        let post_text = microblog_text[post_id];
 
         var post = L.marker([latitude, longitude]).bindPopup(post_text)
         microblogs.addLayer(post);
