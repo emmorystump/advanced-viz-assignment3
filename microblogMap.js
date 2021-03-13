@@ -3,7 +3,7 @@ MicroblogMap = function(_parentElement, _data) {
     this.data = _data;
     console.log(this.data)
     this.mapPosition = [42.22717, 93.33772];
-    this.zoomLevel = 13
+    this.zoomLevel = 12
 
     this.initVis();
 }
