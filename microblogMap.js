@@ -1,6 +1,7 @@
 MicroblogMap = function(_parentElement, _data) {
     this.parentElement = _parentElement;
     this.data = _data;
+    console.log(this.data)
     this.mapPosition = [42.22717, 93.33772];
     this.zoomLevel = 13
 
@@ -16,11 +17,8 @@ MicroblogMap.prototype.initVis = function() {
 		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(vis.map);
 
-    $.getJSON('cse557_option1_microblogs.json', (jsonData) => {
-        vis.data = jsonData;
-        console.log(jsonData);
-        let locations = jsonData.location;
-        console.log(locations[0]);
+    $.getJSON('cse557_option1_sick_microblogs_sampled.json', (jsonData) => {
+        vis.sampled_ids = jsonData;
         vis.updateVis();
     });
 
