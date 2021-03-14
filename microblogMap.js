@@ -28,13 +28,104 @@ MicroblogMap.prototype.initVis = function() {
 
 }
 
+MicroblogMap.prototype.checkDate = function(date, start, end) {
+
+    start = start.split("/");
+    end = end.split("/");
+
+    start_day = parseInt(start[1]);
+    start_month = parseInt(start[0]);
+    start_year = parseInt(start[2]);
+
+    end_day = parseInt(end[1]);
+    end_month = parseInt(end[0]);
+    end_year = parseInt(end[2]);
+
+    date = date.split(" ");
+    month_day_year = date[0].split("/");
+    month = parseInt(month_day_year[0]);
+    day = parseInt(month_day_year[1]);
+    year = parseInt(month_day_year[2]);
+
+    if (start_year < year && end_year > year) {
+        return true;
+    }
+    
+    if (start_year > year || end_year < year) {
+        return false;
+    }
+
+    if (start_year == year && end_year == year) {
+
+        if (start_month < month && end_month > month) {
+            return true;
+        }
+        
+        if (start_month > month || end_month < month) {
+            return false;
+        }
+
+        if (start_month == month && end_month == month) {
+            if (start_day <= day && end_day >= day) {
+                return true;
+            }
+
+            return false;
+        }
+
+        if (start_month == month) {
+            if (start_day <= day) {
+                return true;
+            }
+
+            return false;
+        }
+    
+        if (end_month == month) {
+            if (end_day >= day) {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    if (start_year == year) {
+        if (start_month == month) {
+            if (start_day <= day) {
+                return true;
+            }
+
+            return false;
+        }
+        if (start_month < month) {
+            return true;
+        }
+    }
+
+    if (end_year == year) {
+        if (end_month == month) {
+            if (end_day >= day) {
+                return true;
+            }
+
+            return false;
+        }
+
+        if (end_month > month) {
+            return true;
+        }
+
+        return false;
+    }
+
+    return false;
+
+}
+
 
 MicroblogMap.prototype.updateVis = function(start, end) {
     var vis = this;
-
-    console.log("ran this");
-    console.log(start);
-    console.log(end);
 
     vis.startDate = start;
     vis.endDate = end;
@@ -57,18 +148,16 @@ MicroblogMap.prototype.updateVis = function(start, end) {
         
         // Split date information for when we have a timeline input
         let date = dates[post_id];
-        date = date.split(" ");
-        month_day_year = date[0].split("/");
-        month = month_day_year[0];
-        day = month_day_year[1];
-        yar = month_day_year[2];
-        hour_minute = date[1].split(":");
-        hour = hour_minute[0];
-        minute = hour_minute[1]
+        addToMap = vis.checkDate(date, start, end);
+        console.log(addToMap);
 
 
-        var post = L.marker([latitude, longitude]).bindPopup(post_text)
-        microblogs.addLayer(post);
+        
+        if (addToMap == true) {
+            console.log(dates[post_id]);
+            var post = L.marker([latitude, longitude]).bindPopup(post_text)
+            microblogs.addLayer(post);
+        }
 
     }
 }
