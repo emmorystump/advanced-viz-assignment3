@@ -127,6 +127,16 @@ MicroblogMap.prototype.checkDate = function(date, start, end) {
 MicroblogMap.prototype.updateVis = function(start, end) {
     var vis = this;
 
+    if (vis.map != null) {
+        vis.map.remove();
+        vis.map = null;
+    }
+    vis.map =  L.map(this.parentElement).setView(vis.mapPosition, vis.zoomLevel);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(vis.map);
+
     vis.startDate = start;
     vis.endDate = end;
 
