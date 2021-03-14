@@ -1,9 +1,10 @@
-MicroblogMap = function(_parentElement, _data) {
+MicroblogMap = function(_parentElement, _data, _start, _end) {
     this.parentElement = _parentElement;
     this.data = _data;
-    console.log(this.data)
     this.mapPosition = [42.22717, 93.33772];
-    this.zoomLevel = 12
+    this.zoomLevel = 12;
+    this.startDate = _start;
+    this.endDate = _end;
 
     this.initVis();
 }
@@ -18,11 +19,9 @@ MicroblogMap.prototype.initVis = function() {
         }).addTo(vis.map);
 
 
-    $('input[name="datetimes"]').daterangepicker();
-
     $.getJSON('cse557_option1_sick_microblogs_sampled.json', (jsonData) => {
         vis.sampled_ids = jsonData;
-        vis.updateVis();
+        vis.updateVis(vis.startDate, vis.endDate);
     });
 
     
@@ -30,8 +29,15 @@ MicroblogMap.prototype.initVis = function() {
 }
 
 
-MicroblogMap.prototype.updateVis = function() {
+MicroblogMap.prototype.updateVis = function(start, end) {
     var vis = this;
+
+    console.log("ran this");
+    console.log(start);
+    console.log(end);
+
+    vis.startDate = start;
+    vis.endDate = end;
 
     microblogs = L.layerGroup().addTo(vis.map);
     samples = JSON.parse(vis.sampled_ids)
