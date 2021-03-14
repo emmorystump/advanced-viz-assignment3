@@ -18,13 +18,26 @@
     </head>
     <body>
         <h1>Assignment 3</h1>
+        <h4>Please Select a Time Period</h4>
+        <input type="text" name="datetimes" />
+        <br><br>
         <div id="map">
 
         </div>
 
-        <script src="jquery.min.js"></script>
-        <script src="microblogMap.js"></script>
-        <script src="main.js"></script>
+
+        <!-- <script src="jquery.min.js"></script> -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+        <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="microblogMap.js"></script>
+
+        <script>
+            // $('input[name="datetimes"]').daterangepicker();
+        </script>
     </body>
 
 

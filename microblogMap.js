@@ -17,10 +17,15 @@ MicroblogMap.prototype.initVis = function() {
 		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(vis.map);
 
+
+    $('input[name="datetimes"]').daterangepicker();
+
     $.getJSON('cse557_option1_sick_microblogs_sampled.json', (jsonData) => {
         vis.sampled_ids = jsonData;
         vis.updateVis();
     });
+
+    
 
 }
 
