@@ -126,7 +126,6 @@ MicroblogMap.prototype.checkDate = function(date, start, end) {
 
 MicroblogMap.prototype.clearMarker = function(id) {
     var vis = this;
-    console.log("clear");
     console.log(id);
 
     console.log(vis.markers);
@@ -222,21 +221,6 @@ MicroblogMap.prototype.updateVis = function(start, end) {
         
         if (addToMap == true) {
             vis.createMarker(latitude, longitude, post_text);
-            // var post = L.marker([latitude, longitude]).bindPopup(post_text).on('click', function(e) {
-            //     console.log(e.latlng);
-            //     console.log(e);
-            // });
-
-            // post.addTo(vis.map);
-
-            // // let btn = document.createElement('button');
-            // // btn.innerText = 'Delete Microblog';
-            // // btn.onclick = function() {
-            // //     vis.map.removeLayer(post);
-            // // }
-
-            // post.bindPopup(post_text);
-            // // microblogs.addLayer(post);
         }
 
     }
