@@ -5,6 +5,7 @@ MicroblogMap = function(_parentElement, _data, _start, _end) {
     this.zoomLevel = 12;
     this.startDate = _start;
     this.endDate = _end;
+    this.markers = [];
 
     this.initVis();
 }
@@ -123,6 +124,64 @@ MicroblogMap.prototype.checkDate = function(date, start, end) {
 
 }
 
+MicroblogMap.prototype.clearMarker = function(id) {
+    var vis = this;
+    console.log("clear");
+    console.log(id);
+
+    console.log(vis.markers);
+
+}
+
+MicroblogMap.prototype.createMarker = function(latitude, longitude, post_text) {
+    var vis = this;
+    var id = 0;
+
+    if (vis.markers.length >= 1) {
+        id = vis.markers[vis.markers.length-1]._id + 1;
+    }
+
+    var form = L.DomUtil.create('form', 'my-form');
+    form.innerHTML = '<p>' + post_text + '</p>';
+
+    // var inputText = '<p>' + post_text + '</p>';
+
+    var btn = L.DomUtil.create('button', 'my-button', form);
+    btn.textContent = 'Remove Marker';
+
+    btn.onclick = function(e) {
+        var new_markers = [];
+        vis.markers.forEach(function(marker) {
+            if (marker._id == id) {
+                vis.map.removeLayer(marker);
+            }
+            else {
+                new_markers.push(marker);
+            }
+
+        });
+
+        vis.markers = new_markers;
+    }
+
+
+
+
+    
+    marker = L.marker([latitude, longitude], {
+        draggable: false
+    });
+
+    marker._id = id
+
+    var myPopup = marker.bindPopup(form, {
+        closeButton: false
+    });
+
+    vis.map.addLayer(marker);
+    vis.markers.push(marker);
+
+}
 
 MicroblogMap.prototype.updateVis = function(start, end) {
     var vis = this;
@@ -130,6 +189,7 @@ MicroblogMap.prototype.updateVis = function(start, end) {
     if (vis.map != null) {
         vis.map.remove();
         vis.map = null;
+        vis.markers = [];
     }
     vis.map =  L.map(this.parentElement).setView(vis.mapPosition, vis.zoomLevel);
 
@@ -140,7 +200,7 @@ MicroblogMap.prototype.updateVis = function(start, end) {
     vis.startDate = start;
     vis.endDate = end;
 
-    microblogs = L.layerGroup().addTo(vis.map);
+    // microblogs = L.layerGroup().addTo(vis.map);
     samples = JSON.parse(vis.sampled_ids)
     num_data = samples.length;
 
@@ -159,14 +219,24 @@ MicroblogMap.prototype.updateVis = function(start, end) {
         // Split date information for when we have a timeline input
         let date = dates[post_id];
         addToMap = vis.checkDate(date, start, end);
-        console.log(addToMap);
-
-
         
         if (addToMap == true) {
-            console.log(dates[post_id]);
-            var post = L.marker([latitude, longitude]).bindPopup(post_text)
-            microblogs.addLayer(post);
+            vis.createMarker(latitude, longitude, post_text);
+            // var post = L.marker([latitude, longitude]).bindPopup(post_text).on('click', function(e) {
+            //     console.log(e.latlng);
+            //     console.log(e);
+            // });
+
+            // post.addTo(vis.map);
+
+            // // let btn = document.createElement('button');
+            // // btn.innerText = 'Delete Microblog';
+            // // btn.onclick = function() {
+            // //     vis.map.removeLayer(post);
+            // // }
+
+            // post.bindPopup(post_text);
+            // // microblogs.addLayer(post);
         }
 
     }
