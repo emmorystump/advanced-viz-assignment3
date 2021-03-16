@@ -5,7 +5,7 @@ let end = '05/12/2011';
 let data = [];
 let microblogMap;
 let timeLine;
-
+let timeLineData = 
 $('body').on('submit', '.my-form', mySubmitFunction);
 
 function mySubmitFunction(e) {

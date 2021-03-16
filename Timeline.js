@@ -1,5 +1,3 @@
-//Special thanks to this source: https://bl.ocks.org/d3noob/8375092
-//
 
 function Timeline(_parentElement, _data) {
     this.parentElement = _parentElement;
@@ -8,7 +6,7 @@ function Timeline(_parentElement, _data) {
 }
 Timeline.prototype.initVis = function () {
   console.log(data)
-    // let vis = this;
+    let vis = this;
     // vis.margin = { top: 20, right: 120, bottom: 20, left: 120 },
     //     vis.width = 960 - vis.margin.right - vis.margin.left,
     //     vis.height = 500 - vis.margin.top - vis.margin.bottom;
@@ -31,6 +29,7 @@ Timeline.prototype.initVis = function () {
 
     // console.log("hello????")
     // vis.updateVis(vis.root);
+    vis.wrangleData()
 
 }
 
@@ -39,6 +38,33 @@ Timeline.prototype.addData = function(point) {
 }
 
 Timeline.prototype.wrangleData = function () {
+  let data = [
+    {
+      "name": "Top Level",
+      "parent": "null",
+      "children": [
+        {
+          "name": "Level 2: A",
+          "parent": "Top Level",
+          "children": [
+            {
+              "name": "Son of A",
+              "parent": "Level 2: A"
+            },
+            {
+              "name": "Daughter of A",
+              "parent": "Level 2: A"
+            }
+          ]
+        },
+        {
+          "name": "Level 2: B",
+          "parent": "Top Level"
+        }
+      ]
+    }
+  ];
+data[0].children.forEach(element=>console.log("Element from data" + JSON.stringify(element)))
 
 
 
