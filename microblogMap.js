@@ -24,7 +24,7 @@ MicroblogMap.prototype.initVis = function() {
         vis.updateVis(vis.startDate, vis.endDate);
     });
 
-    
+
     
 
 }
@@ -130,8 +130,7 @@ MicroblogMap.prototype.clearMarker = function(id) {
 
 MicroblogMap.prototype.createMarker = function(point ) {
     var vis = this;
-    var id = 0;
-    console.log(point)
+    var id = point.id;
     if (vis.markers.length >= 1) {
         id = vis.markers[vis.markers.length-1]._id + 1;
     }
