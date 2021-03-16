@@ -41,8 +41,8 @@ MicroblogMap.prototype.checkDate = function(date, start, end) {
     let end_month = parseInt(end[0]);
     let end_year = parseInt(end[2]);
 
-    let date = date.split(" ");
-    let month_day_year = date[0].split("/");
+    let date_split = date.split(" ");
+    let month_day_year = date_split[0].split("/");
     let month = parseInt(month_day_year[0]);
     let day = parseInt(month_day_year[1]);
     let year = parseInt(month_day_year[2]);
@@ -127,13 +127,14 @@ MicroblogMap.prototype.clearMarker = function(id) {
     var vis = this;
 }
 
-MicroblogMap.prototype.createMarker = function(point ) {
+MicroblogMap.prototype.createMarker = function(point) {
     var vis = this;
-    var id = 0;
+    var id = point.id;
+
     console.log(point)
-    if (vis.markers.length >= 1) {
-        id = vis.markers[vis.markers.length-1]._id + 1;
-    }
+    // if (vis.markers.length >= 1) {
+    //     id = vis.markers[vis.markers.length-1]._id + 1;
+    // }
 
     var form = L.DomUtil.create('form', 'my-form');
     form.innerHTML = '<p>' + point.post_text + '</p>';
@@ -196,6 +197,7 @@ MicroblogMap.prototype.updateVis = function(start, end) {
     // microblogs = L.layerGroup().addTo(vis.map);
     let samples = JSON.parse(vis.sampled_ids)
     let num_data = samples.length;
+
     let locations = vis.data.location;
     let dates = vis.data.post_date_time;
     let microblog_text = vis.data.text;
