@@ -1,10 +1,10 @@
 
 
-// microblogMap = new MicroblogMap("map", data);
-
-start = '05/09/2011';
-end = '05/12/2011';
-data = [];
+let start = '05/09/2011';
+let end = '05/12/2011';
+let data = [];
+let microblogMap;
+let timeLine;
 
 $('body').on('submit', '.my-form', mySubmitFunction);
 
@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $.getJSON('cse557_option1_microblogs.json', (jsonData) => {
         data = jsonData;
-        console.log(jsonData);
-        microblogMap = new MicroblogMap("map", jsonData, start, end);
+        timeLine = new Timeline("timeline", [])
+        microblogMap = new MicroblogMap("map", timeLine, jsonData, start, end);
     });
 
     $(function() {

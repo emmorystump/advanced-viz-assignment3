@@ -1,4 +1,5 @@
-MicroblogMap = function(_parentElement, _data, _start, _end) {
+
+function MicroblogMap(_parentElement, _timeline, _data, _start, _end) {
     this.parentElement = _parentElement;
     this.data = _data;
     this.mapPosition = [42.22717, 93.33772];
@@ -6,7 +7,8 @@ MicroblogMap = function(_parentElement, _data, _start, _end) {
     this.startDate = _start;
     this.endDate = _end;
     this.markers = [];
-
+    this.timeline = _timeline
+    this.imageBounds = [[42.3017, 93.5673],[42.1609, 93.1923]]
     this.initVis();
 }
 
@@ -15,10 +17,7 @@ MicroblogMap.prototype.initVis = function() {
 
     vis.map =  L.map(this.parentElement).setView(vis.mapPosition, vis.zoomLevel);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(vis.map);
-
+    L.imageOverlay('a3_data/Vastopolis_Map.png', vis.imageBounds).addTo(vis.map);
 
     $.getJSON('cse557_option1_sick_microblogs_sampled.json', (jsonData) => {
         vis.sampled_ids = jsonData;
@@ -34,19 +33,19 @@ MicroblogMap.prototype.checkDate = function(date, start, end) {
     start = start.split("/");
     end = end.split("/");
 
-    start_day = parseInt(start[1]);
-    start_month = parseInt(start[0]);
-    start_year = parseInt(start[2]);
+    let start_day = parseInt(start[1]);
+    let start_month = parseInt(start[0]);
+    let start_year = parseInt(start[2]);
 
-    end_day = parseInt(end[1]);
-    end_month = parseInt(end[0]);
-    end_year = parseInt(end[2]);
+    let end_day = parseInt(end[1]);
+    let end_month = parseInt(end[0]);
+    let end_year = parseInt(end[2]);
 
-    date = date.split(" ");
-    month_day_year = date[0].split("/");
-    month = parseInt(month_day_year[0]);
-    day = parseInt(month_day_year[1]);
-    year = parseInt(month_day_year[2]);
+    let date = date.split(" ");
+    let month_day_year = date[0].split("/");
+    let month = parseInt(month_day_year[0]);
+    let day = parseInt(month_day_year[1]);
+    let year = parseInt(month_day_year[2]);
 
     if (start_year < year && end_year > year) {
         return true;
@@ -126,32 +125,29 @@ MicroblogMap.prototype.checkDate = function(date, start, end) {
 
 MicroblogMap.prototype.clearMarker = function(id) {
     var vis = this;
-    console.log(id);
-
-    console.log(vis.markers);
-
 }
 
-MicroblogMap.prototype.createMarker = function(latitude, longitude, post_text) {
+MicroblogMap.prototype.createMarker = function(point ) {
     var vis = this;
     var id = 0;
-
+    console.log(point)
     if (vis.markers.length >= 1) {
         id = vis.markers[vis.markers.length-1]._id + 1;
     }
 
     var form = L.DomUtil.create('form', 'my-form');
-    form.innerHTML = '<p>' + post_text + '</p>';
+    form.innerHTML = '<p>' + point.post_text + '</p>';
 
-    // var inputText = '<p>' + post_text + '</p>';
 
     var btn = L.DomUtil.create('button', 'my-button', form);
+    let timelineBtn = L.DomUtil.create('button', 'create-button', form);
     btn.textContent = 'Remove Marker';
+    timelineBtn.textContent="Add to Timeline"
 
     btn.onclick = function(e) {
         var new_markers = [];
         vis.markers.forEach(function(marker) {
-            if (marker._id == id) {
+            if (marker._id == point.id) {
                 vis.map.removeLayer(marker);
             }
             else {
@@ -162,12 +158,11 @@ MicroblogMap.prototype.createMarker = function(latitude, longitude, post_text) {
 
         vis.markers = new_markers;
     }
+    timelineBtn.onclick = function(e) {
+        vis.timeline.addData(point)
+    }
 
-
-
-
-    
-    marker = L.marker([latitude, longitude], {
+    let marker = L.marker([point.latitude, point.longitude], {
         draggable: false
     });
 
@@ -182,6 +177,7 @@ MicroblogMap.prototype.createMarker = function(latitude, longitude, post_text) {
 
 }
 
+
 MicroblogMap.prototype.updateVis = function(start, end) {
     var vis = this;
 
@@ -192,35 +188,33 @@ MicroblogMap.prototype.updateVis = function(start, end) {
     }
     vis.map =  L.map(this.parentElement).setView(vis.mapPosition, vis.zoomLevel);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(vis.map);
+    L.imageOverlay('a3_data/Vastopolis_Map.png', vis.imageBounds).addTo(vis.map);
 
     vis.startDate = start;
     vis.endDate = end;
 
     // microblogs = L.layerGroup().addTo(vis.map);
-    samples = JSON.parse(vis.sampled_ids)
-    num_data = samples.length;
-
+    let samples = JSON.parse(vis.sampled_ids)
+    let num_data = samples.length;
     let locations = vis.data.location;
     let dates = vis.data.post_date_time;
     let microblog_text = vis.data.text;
     let user = vis.data.user_id;
 
     for (var i = 0; i < num_data; i++) {
-        post_id = samples[i];
-        loc = locations[post_id].split(" ");
-        let latitude = loc[0];
-        let longitude = loc[1];
+        let post_id = samples[i];
+        let loc = locations[post_id].split(" ");
+        let post_latitude = loc[0];
+        let post_longitude = loc[1];
         let post_text = microblog_text[post_id];
-        
+        let user_id = user[post_id];
         // Split date information for when we have a timeline input
         let date = dates[post_id];
-        addToMap = vis.checkDate(date, start, end);
+        let addToMap = vis.checkDate(date, start, end);
         
         if (addToMap == true) {
-            vis.createMarker(latitude, longitude, post_text);
+            let addObj = {id: post_id, latitude: post_latitude, longitude: post_longitude, post_text: post_text, user: user_id }
+            vis.createMarker(addObj);
         }
 
     }
