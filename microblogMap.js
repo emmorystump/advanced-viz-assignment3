@@ -25,6 +25,7 @@ MicroblogMap.prototype.initVis = function() {
     });
 
     
+    
 
 }
 
@@ -41,7 +42,7 @@ MicroblogMap.prototype.checkDate = function(date, start, end) {
     let end_month = parseInt(end[0]);
     let end_year = parseInt(end[2]);
 
-    let date = date.split(" ");
+    date = date.split(" ");
     let month_day_year = date[0].split("/");
     let month = parseInt(month_day_year[0]);
     let day = parseInt(month_day_year[1]);

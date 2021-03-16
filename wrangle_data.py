@@ -23,14 +23,24 @@ def isSick(text, identifiers):
             return True
     return False
 
-microblogs_data = pd.read_pickle('cse_557_option1/cse557_option1_microblogs.pkl')
+microblogs_data = pd.read_pickle('cse557_option1_microblogs.pkl copy')
 microblogs_data_json = microblogs_data.to_json(orient='records')
 temp = pd.read_json(microblogs_data_json)
 
 # print(len(temp.location))
 num_records = len(temp.location)
 
-identifiers = ["flu", "fatigue", "fever", "doctor", "patient", "sick", "sore", "medicine", "pain", "ache", "hurt", "diarrhea", "hospital", "chill", "cough"]
+identifiers = ["flu", "flu-like", "tired", "fatigue", "fever", "ill", "doctor", "doc", "nurse", "ER", 
+"emergency room", "paramedic", "appointment", "schedule", "ambulance", "patient", 
+"sick", "sore", "medicine", "pain", "ache", "headache",
+"hurt", "diarrhea", "runs", "office", "doctor's office",
+"hospital", "chill", "chills", "germ", "bug", "virus", "sneeze", "sneezes", "sneezing", "hot",
+"cold", "freezing", "burning", "stomachache", "tummyache", "stomach", "tummy", "parched", "dry",
+"scratchy", "contagion", "contagious", "quarantine", "pneumonia", "bronchitis", "lung", "lungs",
+"drugs", "drug", "prescription", "prescriptions", "weak", "weakness", "shake", "shakes", "shaky",
+"sweating", "sweats", "sweat", "allergy", "allergies", "allergic", "swelling", "swell", "swells", "swollen", 
+"vomit", "vomiting", "nausea", "dizzy", "dizziness", "infected", "infectious", "cough", "cold", "stuffy", "runny", "hacking", "hack", "feverish",
+ "meds", "med", "pharmacy", "pharmacist", "emergency"]
 
 sick_posts = []
 
