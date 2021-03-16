@@ -131,9 +131,9 @@ MicroblogMap.prototype.clearMarker = function(id) {
 MicroblogMap.prototype.createMarker = function(point ) {
     var vis = this;
     var id = point.id;
-    if (vis.markers.length >= 1) {
-        id = vis.markers[vis.markers.length-1]._id + 1;
-    }
+    // if (vis.markers.length >= 1) {
+    //     id = vis.markers[vis.markers.length-1]._id + 1;
+    // }
 
     var form = L.DomUtil.create('form', 'my-form');
     form.innerHTML = '<p>' + point.post_text + '</p>';
