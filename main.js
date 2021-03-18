@@ -35,7 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
             start = picker.startDate.format('MM/DD/YYYY');
             end = picker.endDate.format('MM/DD/YYYY');
-            microblogMap.updateVis(start, end);
+            console.log("start" + start)
+            console.log("end " + end )
+            microblogMap.changeMapForDate(start, end);
 
         });
       
