@@ -18,8 +18,10 @@ MicroblogMap.prototype.initVis = function() {
     vis.map =  L.map(this.parentElement).setView(vis.mapPosition, vis.zoomLevel);
 
     L.imageOverlay('a3_data/Vastopolis_Map.png', vis.imageBounds).addTo(vis.map);
+    vis.markerLayer = L.LayerGroup();
+    vis.map.addControl( new L.Control.ListMarkers({layer: markersLayer}) );
 
-    $.getJSON('cse557_option1_sick_microblogs_sampled.json', (jsonData) => {
+    $.getJSON('cse557_option1_sick_microblogs.json', (jsonData) => {
         vis.sampled_ids = jsonData;
         vis.updateVis(vis.startDate, vis.endDate);
     });
@@ -136,7 +138,7 @@ MicroblogMap.prototype.createMarker = function(point) {
     // }
 
     var form = L.DomUtil.create('form', 'my-form');
-    form.innerHTML = '<p>' + point.post_text + '</p>';
+    form.innerHTML = '<p>' + point.post_text + '</p>' + '<p>' + point.date + '</p>';
 
 
     var btn = L.DomUtil.create('button', 'my-button', form);
@@ -208,13 +210,14 @@ MicroblogMap.prototype.updateVis = function(start, end) {
         let post_latitude = loc[0];
         let post_longitude = loc[1];
         let post_text = microblog_text[post_id];
+        let post_date = dates[post_id];
         let user_id = user[post_id];
         // Split date information for when we have a timeline input
         let date = dates[post_id];
         let addToMap = vis.checkDate(date, start, end);
         
         if (addToMap == true) {
-            let addObj = {id: post_id, latitude: post_latitude, longitude: post_longitude, post_text: post_text, user: user_id }
+            let addObj = {id: post_id, date: post_date, latitude: post_latitude, longitude: post_longitude, post_text: post_text, user: user_id }
             vis.createMarker(addObj);
         }
 

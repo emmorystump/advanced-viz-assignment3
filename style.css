@@ -11,10 +11,16 @@
     flex-direction: column ;
 }
 
-.node circle {
+.node {
     fill: #fff;
     stroke: steelblue;
     stroke-width: 3px;
+}
+
+#timeline {
+    overflow: scroll;
+    width: 100%;
+    position: absolute;
 }
 
 .node text { font: 12px sans-serif; }
