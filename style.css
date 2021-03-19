@@ -1,14 +1,17 @@
 #map {
-    height: 600px;
+    height: 65vh;
+    width: 75vw;
 
 }
 .row {
-    display: flexbox;
+    display: flex;
     flex-direction: row;
+    flex-wrap: nowrap
 }
 .col {
-    display: flexbox;
+    display: flex;
     flex-direction: column ;
+    flex-wrap: nowrap
 }
 
 .node {
@@ -16,7 +19,12 @@
     stroke: steelblue;
     stroke-width: 3px;
 }
-
+#bigram-lister {
+    overflow: scroll;
+    width: 20vw;
+    height: 60vh;
+    padding: 0.5em;
+}
 #timeline {
     overflow: scroll;
     width: 100%;
@@ -30,3 +38,13 @@
     stroke: #ccc;
     stroke-width: 2px;
   }
+.tooltip {
+    position: absolute;			
+    text-align: center;											
+    padding: 1em;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;		
+    border-radius: 0.5em;			
+
+}
+	

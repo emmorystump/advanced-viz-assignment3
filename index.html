@@ -20,10 +20,27 @@
         <h1>Assignment 3</h1>
         <h4>Please Select a time period which you would like to analyze:</h4>
         <input type="text" name="datetimes" value="05/09/2011 - 05/12/2011"/>
-        <br><br>
-        <div id="map">
+        <select name="dataset" id="dataset">
+           
+            <option value="cse557_option1_sick_microblogs_sampled.json" selected>Sampled Sick Person Points</option>
+            <option value="cse557_option1_sick_microblogs.json">All Sick Person Points</option>
+            <option value="cse557_option1_coallocated_microblogs.json">Points with Collocations</option>
+            <option value="all">All Points</option>
+          </select>
 
+        <br><br>
+        <div class="row">
+            <div class="col">
+                <div id="map">
+            </div>
+            </div>
+            <div class="col">
+                <div id="bigram-lister">
+                </div>
+            </div>
         </div>
+
+      
         <div id="timeline">
 
         </div>
@@ -34,9 +51,11 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
         <script src="https://d3js.org/d3.v6.js"></script>
-        <script src = d3-timeline.js></script>
+        <script type="text/javascript" src="Leaflet_Plugins/simpleheat.js"></script>
+        <script type="text/javascript" src="Leaflet_Plugins/HeatMap.js"></script>
         <script type="text/javascript" src="microblogMap.js"></script>
         <script type="text/javascript" src="Timeline.js"></script>
+        <script type="text/javascript" src = "coallocationScreen.js"></script>
         <script type="text/javascript" src="main.js"></script>
    
 

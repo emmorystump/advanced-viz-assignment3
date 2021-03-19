@@ -1,9 +1,10 @@
 
-function MicroblogMap(_parentElement, _timeline, _data, _start, _end) {
+function MicroblogMap(_parentElement, _timeline, _data, _fileName, _start, _end) {
     this.parentElement = _parentElement;
     this.data = _data;
     this.mapPosition = [42.22717, 93.33772];
     this.zoomLevel = 15;
+    this.fileName = _fileName
     this.startDate = _start;
     this.endDate = _end;
     this.markers = [];
@@ -21,18 +22,27 @@ MicroblogMap.prototype.initVis = function () {
 
     L.imageOverlay('a3_data/Vastopolis_Map.png', vis.imageBounds).addTo(vis.map);
 
-    // vis.map.on('zoomend', function(e) {
-    //     console.log("zoomend")
-    //     vis.updateVis(vis.startDate, vis.endDate)
-    // })
+    vis.map.on('zoomend', function() {
+        vis.updateVis(vis.startDate, vis.endDate)
+    });
 
-    $.getJSON('cse557_option1_sick_microblogs.json', (jsonData) => {
+    $.getJSON(vis.fileName, (jsonData) => {
         vis.sampled_ids = jsonData;
         vis.updateVis(vis.startDate, vis.endDate);
     });
 
 
 
+
+}
+
+MicroblogMap.prototype.changeDataSet=function(newFileName) {
+    var vis = this
+    vis.fileName = newFileName
+    $.getJSON(vis.fileName, (jsonData) => {
+        vis.sampled_ids = jsonData;
+        vis.updateVis(vis.startDate, vis.endDate);
+    });
 
 }
 
@@ -209,12 +219,24 @@ MicroblogMap.prototype.updateVis = function (start, end) {
     let vis = this
     let samples = JSON.parse(vis.sampled_ids)
     let num_data = samples.length;
-
     let locations = vis.data.location;
     let dates = vis.data.post_date_time;
     let microblog_text = vis.data.text;
     let user = vis.data.user_id;
-
+    if(num_data > 4000) {
+        let latlngs=[]
+        for (var i = 0; i < num_data; i++) {
+            let post_id = samples[i];
+            let loc = locations[post_id].split(" ");
+            let post_latitude = loc[0];
+            let post_longitude = loc[1];
+            let newlng = L.latLng(post_latitude, post_longitude);
+            latlngs.push(newlng)        
+    }
+    let heat = L.heatLayer(latlngs)
+    heat.addTo(vis.map)
+    }
+    else {
     for (var i = 0; i < num_data; i++) {
         let post_id = samples[i];
         let loc = locations[post_id].split(" ");
@@ -227,12 +249,13 @@ MicroblogMap.prototype.updateVis = function (start, end) {
         let date = dates[post_id];
         let addToMap = vis.checkDate(date, start, end);
         var latlng = L.latLng(post_latitude, post_longitude);
-//&& this.map.getBounds().contains(latlng)
 
-        if (addToMap == true ) {
+
+        if (addToMap == true && this.map.getBounds().contains(latlng) ) {
             let addObj = { id: post_id, date: post_date, latitude: post_latitude, longitude: post_longitude, post_text: post_text, user: user_id }
             vis.createMarker(addObj);
         }
 
     }
+}
 }
