@@ -69,7 +69,7 @@ with open('cse557_option1_sick_microblogs.json', 'w') as f:
 # json_string.to_json('cse557_option1_sick_microblogs.json')
 
 
-sampled_sick_posts = random.sample(sick_posts, 1000)
+sampled_sick_posts = random.sample(sick_posts, 10000)
 json_string2 = json.dumps(sampled_sick_posts, default=np_encoder)
 
 with open('cse557_option1_sick_microblogs_sampled.json', 'w') as f:

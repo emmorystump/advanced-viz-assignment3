@@ -34,25 +34,39 @@ coallocationScreen.prototype.wrangleData=function() {
 coallocationScreen.prototype.getNewDateAndUpdate=function(start, end) {
     let vis = this
     vis.displayData=[]
-    var start = new Date(start)
-    var end = new Date(end)
+    var startDate = new Date(start)
+    var endDate = new Date(end)
     var loop = new Date(start);
     var timeFormatter = d3.timeFormat('%m/%d/%Y')
     let newData=[]
-    while(loop < end){
+    console.log(startDate)
+    console.log(endDate)
+    if (start==end) {
+        let key = timeFormatter(startDate)
+        key = key.substring(1).trim()
+        if (key.charAt(2)=='0') {
+            key = key.slice(0,2) + key.slice(3)
+        }
+        let items = vis.data[key]
+        for (var j = 0; j < items.length;++j) {
+            newData.push(items[j])
+        }
+    }
+    else {
+    while(loop < endDate){
         let key = timeFormatter(loop)
         key = key.substring(1).trim()
         if (key.charAt(2)=='0') {
             key = key.slice(0,2) + key.slice(3)
         }
         let items = vis.data[key]
-        console.log(items.length)
         for (var j = 0; j < items.length;++j) {
             newData.push(items[j])
         }
         var newDate = loop.setDate(loop.getDate() + 1);
         loop = new Date(newDate);
     }
+}
     Array.prototype.push.apply(vis.displayData, newData)
     vis.displayData = vis.displayData.sort((a, b) => b[1] - a[1]);
     vis.updateVis(start,end)

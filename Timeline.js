@@ -13,7 +13,6 @@ Timeline.prototype.initVis = function () {
   vis.div = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-  // SVG drawing area
   vis.svg = d3.select("#" + vis.parentElement).append("svg")
     .attr("width", vis.width + vis.margin.left + vis.margin.right)
     .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
@@ -40,25 +39,10 @@ Timeline.prototype.initVis = function () {
 
 
 
-  // TO-DO: Initialize brush component
-  // Initialize time scale (x-axis)
   var xContext = d3.scaleTime()
     .range([0, vis.width])
     .domain(domain);
 
-  // Initialize brush component
-  // var brush = d3.brushX()
-  // .extent([[0, 0], [vis.width, vis.height]])
-  // .on("brush", brushed);
-
-
-  // TO-DO: Append brush component here
-  // vis.svg.append("g")
-  //       .attr("class", "x brush")
-  //       .call(brush)
-  //     .selectAll("rect")
-  //       .attr("y", -6)
-  //       .attr("height", vis.height + 7);
 
   vis.svg.append("g")
     .attr("class", "x-axis axis")
@@ -90,19 +74,18 @@ Timeline.prototype.wrangleData = function () {
 
 Timeline.prototype.removePoint=function(point) {
   let vis= this
-  vis.data.splice(point)
+  let deletedItems = vis.data.splice(point)
   vis.updateVis()
 }
 //Help with tooltips: https://bl.ocks.org/d3noob/180287b6623496dbb5ac4b048813af52
 Timeline.prototype.updateVis = function () {
+
   let vis = this
   var nodes = vis.svg.selectAll(".node")
     .data(vis.data)
 
-
   nodes.enter().append("circle")
     .attr("class", "node")
-    .merge(nodes)
     .attr("cx", function (d) {
       console.log(d)
       return vis.x(d.date)
@@ -116,11 +99,15 @@ Timeline.prototype.updateVis = function () {
         .style("left", (event.pageX) + "px")
         .style("top", (event.pageY - 28) + "px")
         .style("opacity", 1);
-
-        d3.select("#but1").on("click", function(){ (vis.removePoint(d)) });
-        d3.select("#but2").on("click", function(){ 
+        d3.select("#but1").on("click", function(){ 
+          vis.removePoint(d)
           vis.div.html("")
           .style("opacity", 0)
+
+         });
+        d3.select("#but2").on("click", function(){ 
+          vis.div.html("")
+        .style("opacity", 0)
 
         });
     })
@@ -128,7 +115,7 @@ Timeline.prototype.updateVis = function () {
       return vis.y(d.date)
     })
     .attr("r", 10)
-  nodes.transition()
+    let nodesRemove = nodes.exit().remove()
 
 
 }
